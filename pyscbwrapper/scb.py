@@ -68,7 +68,7 @@ class SCB(object):
                                                var['valueTexts'][j] in \
                                                kwargs[kwarg]]))
         if len(code_values)>0:
-        self.query["query"].append(query_cons(code_values[0],code_values[1]))
+        self.query["query"].extend([query_cons(item,code_values[1][index]) for item,index in enumerate(code_values)])
                     
     def query_cons(code,values):
         return { "code": code, "selection": {"filter": "item", "values": values} }
