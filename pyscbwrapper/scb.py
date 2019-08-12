@@ -55,7 +55,7 @@ class SCB(object):
                       "response": {"format": "json"}
                       }
 
-    def set_query(self, **kwargs):
+    def set_query(self, code_values=[], **kwargs):
         """ Forms a query from input arguments. """
         self.clear_query()
         response = self.info()
@@ -63,16 +63,17 @@ class SCB(object):
         for kwarg in kwargs:
             for var in variables:
                 if var["text"].replace(' ' , '') == kwarg:
-                    self.query["query"].append({
-                            "code": var['code'],
-                            "selection": {
-                                    "filter": "item",
-                                    "values": [var['values'][j] for j in \
+                    self.query["query"].append(query_cons(var['code'], [var['values'][j] for j in \
                                                range(len(var['values'])) if \
                                                var['valueTexts'][j] in \
-                                               kwargs[kwarg]]
-                                    }
-                                })
+                                               kwargs[kwarg]]))
+        if len(code_values)>0:
+        self.query["query"].append(query_cons(code_values[0],code_values[1]))
+                    
+    def query_cons(code,values):
+        return { "code": code, "selection": {"filter": "item", "values": values} }
+        
+               
 
     def get_query(self):
         """ Returns the current query. """
